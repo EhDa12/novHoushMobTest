@@ -1,0 +1,29 @@
+[
+  {
+    "sessionId": "session_1738153814995_5gcaetr2",
+    "userName": "احسان",
+    "email": "email@ehsan.com",
+    "ratingOverall": "5",
+    "ratingRecommend": "5",
+    "userExperience": "نظری ندارم. تسته",
+    "submittedAt": "2025-01-29T17:40:26.081Z"
+  },
+  {
+    "sessionId": "session_1738153814995_5gcaetr2",
+    "userName": "احسان",
+    "email": "email@ehsan.com",
+    "ratingOverall": "5",
+    "ratingRecommend": "5",
+    "userExperience": "نظری ندارم. تسته",
+    "submittedAt": "2025-01-29T17:40:28.664Z"
+  },
+  {
+    "sessionId": "session_1738153465208_iy9jkxmf",
+    "userName": "بازم احسان",
+    "email": "d@e.com",
+    "ratingOverall": "5",
+    "ratingRecommend": "5",
+    "userExperience": "یک چیزایی",
+    "submittedAt": "2025-01-29T17:43:03.166Z"
+  }
+]

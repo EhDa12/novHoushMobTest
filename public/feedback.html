@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8">
+  <title>بازخورد شما</title>
+  <style>
+    body {
+      direction: rtl;
+      font-family: "vazirmatn", "Tahoma", sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .feedback-container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #4caf50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .msg {
+      margin-top: 10px;
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="feedback-container">
+    <h2>لطفاً نظر خود را با ما در میان بگذارید</h2>
+    <form onsubmit="submitFeedback(event)">
+
+      <!-- نام (اختیاری) -->
+      <label for="userName">نام شما (اختیاری):</label>
+      <input type="text" id="userName" name="userName" placeholder="نام...">
+
+      <!-- ایمیل (اختیاری) -->
+      <label for="email">ایمیل شما (اختیاری):</label>
+      <input type="email" id="email" name="email" placeholder="ایمیل...">
+
+      <!-- امتیاز کلی -->
+      <label for="ratingOverall">امتیاز کلی از تجربه گفتگو (۱ تا ۵):</label>
+      <select id="ratingOverall" name="ratingOverall">
+        <option value="5">5 - عالی</option>
+        <option value="4">4 - خوب</option>
+        <option value="3">3 - معمولی</option>
+        <option value="2">2 - ضعیف</option>
+        <option value="1">1 - خیلی ضعیف</option>
+      </select>
+
+      <!-- احتمال توصیه به دیگران -->
+      <label for="ratingRecommend">چقدر احتمال دارد استفاده از این دستیار خرید را به دیگران توصیه کنید؟ (۱ تا ۵):</label>
+      <select id="ratingRecommend" name="ratingRecommend">
+        <option value="5">5 - خیلی زیاد</option>
+        <option value="4">4 - زیاد</option>
+        <option value="3">3 - متوسط</option>
+        <option value="2">2 - کم</option>
+        <option value="1">1 - خیلی کم</option>
+      </select>
+
+      <!-- متن نظر -->
+      <label for="userExperience">
+        تجربه یا نظر شما که بخواهید به ما بگویید یا اگر چیزی را به اپ اضافه کنیم، این اپ را به بقیه توصیه می‌کنید:
+      </label>
+      <textarea id="userExperience" name="userExperience" rows="4" placeholder="نظر شما..."></textarea>
+
+      <button type="submit">ارسال بازخورد</button>
+    </form>
+
+    <div id="feedbackMsg" class="msg"></div>
+  </div>
+
+  <script src="feedback.js"></script>
+</body>
+</html>

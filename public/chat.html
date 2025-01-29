@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8">
+  <title>راهنمای خرید موبایل</title>
+  <style>
+    /****************************************************
+     * Global Reset & Basic Styles
+     ****************************************************/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "vazirmatn", "Tahoma", sans-serif;
+      background: #f0f0f0;
+      color: #333;
+      line-height: 1.6;
+      direction: rtl;    /* Right-to-Left text direction */
+    }
+
+    /****************************************************
+     * Main Container (Flex Layout)
+     ****************************************************/
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0 auto;
+      max-width: 900px;
+      position: relative;
+      padding-bottom: 70px;
+    }
+
+    /****************************************************
+     * Header
+     ****************************************************/
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+    header h1 {
+      font-size: 24px;
+      color: #4caf50;
+    }
+
+    /****************************************************
+     * Chat Window (Scrollable)
+     ****************************************************/
+    .chat-window {
+      flex: 1;
+      background-color: #fff;
+      margin: 0 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    /****************************************************
+     * Bubble Wrappers and Messages
+     ****************************************************/
+    /* 
+      Each message is wrapped in .bubble-wrapper.user or .bubble-wrapper.assistant.
+      We'll use "flex-end" for the side we want that bubble on.
+    */
+
+    /* USER on the LEFT */
+    .bubble-wrapper.user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* user bubble on the left */
+      margin: 10px 0;
+      position: relative;
+    }
+    /* ASSISTANT on the RIGHT */
+    .bubble-wrapper.assistant {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; /* assistant bubble on the right */
+      margin: 10px 0;
+      position: relative;
+    }
+
+    /* The .message class styles the actual bubble */
+    .message {
+      max-width: 60%;
+      border-radius: 20px;
+      padding: 12px 18px;
+      position: relative;
+      font-size: 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .message.user {
+      background-color: #d4f8d4; /* Light green bubble for user */
+      text-align: right;  /* In RTL, text will flow to the right anyway */
+    }
+    .message.assistant {
+      background-color: #e4e4e4; /* Light gray bubble for assistant */
+      text-align: right; 
+    }
+
+    /* 
+      Arrows: 
+      - user bubble arrow on the LEFT side 
+      - assistant bubble arrow on the RIGHT side 
+    */
+    .bubble-wrapper.user .message::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: -10px;    /* arrow on the left for user */
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-right: 10px solid #d4f8d4;
+    }
+    .bubble-wrapper.assistant .message::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: -10px;   /* arrow on the right for assistant */
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 10px solid #e4e4e4;
+    }
+
+    /****************************************************
+     * Product Cards
+     ****************************************************/
+    .product-card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      /* 
+        We'll align them to the same side as the bubble. 
+        For user = left, for assistant = right. 
+        You can also center them if you prefer.
+      */
+    }
+
+    .product-card {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+      text-align: right;
+      border: 1px solid #ddd;
+      transition: transform 0.2s ease;
+      max-width: 270px;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    .product-card h3 {
+      font-size: 18px;
+      color: #4caf50;
+      margin-bottom: 10px;
+    }
+    .product-card p {
+      font-size: 14px;
+      color: #666;
+      margin: 4px 0;
+    }
+    .product-card p strong {
+      color: #333;
+    }
+
+    /****************************************************
+     * Fixed Input Area
+     ****************************************************/
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      padding: 15px;
+      border-top: 1px solid #ccc;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+    }
+    .input-area input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .input-area button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4caf50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .input-area button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>راهنمای خرید موبایل</h1>
+    </header>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+      <!-- The messages and product cards will appear here dynamically -->
+    </div>
+  </div>
+
+  <!-- Input Area (fixed at bottom) -->
+  <div class="input-area">
+    <input 
+      type="text" 
+      id="userInput" 
+      placeholder="سؤالتان را در مورد گوشی‌ها بپرسید..." 
+    />
+    <button onclick="handleSend()">ارسال</button>
+    <button style="background-color: #f44336;" onclick="endChat()">پایان</button>
+  </div>
+
+  <!-- The updated script.js that handles JSON extraction, bubble rendering, etc. -->
+  <script src="script.js"></script>
+</body>
+</html>
