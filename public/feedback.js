@@ -2,7 +2,7 @@
  * feedback.js
  ************************************/
 
-const BASE_URL = "http://localhost:3000"; // or your actual server
+const BASE_URL = ""; // or your actual server
 // sessionId is the same from localStorage
 let sessionId = localStorage.getItem("chatSessionId") || "";
 
