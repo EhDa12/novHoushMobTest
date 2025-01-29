@@ -2,7 +2,7 @@
  * script.js
  ************************************/
 
-const BASE_URL = "http://localhost:3000"; // Update if server runs elsewhere
+const BASE_URL = ""; // Update if server runs elsewhere
 let messages = []; // Store the conversation
 
 // 1) Generate or retrieve a sessionId
