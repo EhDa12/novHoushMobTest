@@ -2,7 +2,10 @@
 <html dir="rtl" lang="fa">
 <head>
   <meta charset="utf-8">
+  <!-- Responsive meta tag for mobile scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>راهنمای خرید موبایل</title>
+
   <style>
     /****************************************************
      * Global Reset & Basic Styles
@@ -17,7 +20,7 @@
       background: #f0f0f0;
       color: #333;
       line-height: 1.6;
-      direction: rtl;    /* Right-to-Left text direction */
+      direction: rtl; /* Right-to-Left text direction */
     }
 
     /****************************************************
@@ -26,11 +29,12 @@
     .container {
       display: flex;
       flex-direction: column;
+      width: 100%;       /* let it shrink on mobile */
+      max-width: 900px;  /* limit max width on larger screens */
       min-height: 100vh;
       margin: 0 auto;
-      max-width: 900px;
       position: relative;
-      padding-bottom: 70px;
+      padding-bottom: 70px; /* space for bottom input area */
     }
 
     /****************************************************
@@ -61,31 +65,22 @@
     /****************************************************
      * Bubble Wrappers and Messages
      ****************************************************/
-    /* 
-      Each message is wrapped in .bubble-wrapper.user or .bubble-wrapper.assistant.
-      We'll use "flex-end" for the side we want that bubble on.
-    */
-
-    /* USER on the LEFT */
-    .bubble-wrapper.user {
+    .bubble-wrapper {
       display: flex;
       flex-direction: column;
-      align-items: flex-start; /* user bubble on the left */
       margin: 10px 0;
       position: relative;
     }
-    /* ASSISTANT on the RIGHT */
+    .bubble-wrapper.user {
+      align-items: flex-start; /* user bubble on the left side */
+    }
     .bubble-wrapper.assistant {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end; /* assistant bubble on the right */
-      margin: 10px 0;
-      position: relative;
+      align-items: flex-end;   /* assistant bubble on the right side */
     }
 
     /* The .message class styles the actual bubble */
     .message {
-      max-width: 60%;
+      max-width: 60%; /* bubble width on larger screens */
       border-radius: 20px;
       padding: 12px 18px;
       position: relative;
@@ -93,27 +88,21 @@
       line-height: 1.4;
       word-wrap: break-word;
       white-space: pre-wrap;
+      text-align: right;
     }
-
     .message.user {
       background-color: #d4f8d4; /* Light green bubble for user */
-      text-align: right;  /* In RTL, text will flow to the right anyway */
     }
     .message.assistant {
       background-color: #e4e4e4; /* Light gray bubble for assistant */
-      text-align: right; 
     }
 
-    /* 
-      Arrows: 
-      - user bubble arrow on the LEFT side 
-      - assistant bubble arrow on the RIGHT side 
-    */
+    /* Arrows */
     .bubble-wrapper.user .message::after {
       content: "";
       position: absolute;
       top: 12px;
-      left: -10px;    /* arrow on the left for user */
+      left: -10px;
       width: 0;
       height: 0;
       border-top: 5px solid transparent;
@@ -124,7 +113,7 @@
       content: "";
       position: absolute;
       top: 12px;
-      right: -10px;   /* arrow on the right for assistant */
+      right: -10px;
       width: 0;
       height: 0;
       border-top: 5px solid transparent;
@@ -140,13 +129,7 @@
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 10px;
-      /* 
-        We'll align them to the same side as the bubble. 
-        For user = left, for assistant = right. 
-        You can also center them if you prefer.
-      */
     }
-
     .product-card {
       background-color: #fff;
       padding: 15px;
@@ -155,7 +138,8 @@
       text-align: right;
       border: 1px solid #ddd;
       transition: transform 0.2s ease;
-      max-width: 270px;
+      max-width: 270px; /* On large screens, cards won't exceed 270px */
+      flex: 1 1 auto;   /* On small screens, let them shrink or grow */
     }
     .product-card:hover {
       transform: translateY(-4px);
@@ -210,10 +194,25 @@
     .input-area button:hover {
       background-color: #45a049;
     }
+
+    /****************************************************
+     * Responsive Tweaks for Mobile
+     ****************************************************/
+    @media (max-width: 600px) {
+      .message {
+        max-width: 80%;    /* allow chat bubbles to be wider on small screens */
+        font-size: 14px;
+      }
+      .product-card {
+        max-width: 100%;   /* let product cards stretch on small screens */
+      }
+      header h1 {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
-
   <div class="container">
     <!-- Header -->
     <header>
