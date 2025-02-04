@@ -2,8 +2,8 @@
  * script.js
  ************************************/
 
-const BASE_URL = ""; // Update if server runs elsewhere
-let messages = []; // Store the conversation
+const BASE_URL = ""; // e.g., "https://yourserver.example.com"
+let messages = []; 
 
 // 1) Generate or retrieve a sessionId
 let sessionId = localStorage.getItem("chatSessionId");
@@ -23,21 +23,15 @@ const userInput = document.getElementById("userInput");
  *   - recommendations: array of phone objects (if any)
  */
 function extractRecommendations(content) {
-  // Regex to capture ```json ... ```
   const regex = /```json([\s\S]*?)```/i;
   const match = content.match(regex);
   if (!match) {
-    return {
-      cleanedText: content,
-      recommendations: []
-    };
+    return { cleanedText: content, recommendations: [] };
   }
 
-  // This is the raw JSON string between the fences
   const jsonString = match[1].trim();
   let recommendations = [];
 
-  // Try to parse the JSON
   try {
     const parsed = JSON.parse(jsonString);
     if (parsed && Array.isArray(parsed.recommendations)) {
@@ -47,13 +41,9 @@ function extractRecommendations(content) {
     console.error("Error parsing JSON snippet:", error);
   }
 
-  // Remove the entire code block from the displayed content
   const cleanedText = content.replace(regex, "").trim();
 
-  return {
-    cleanedText,
-    recommendations
-  };
+  return { cleanedText, recommendations };
 }
 
 /** Render the conversation in the chat window */
@@ -61,24 +51,23 @@ function renderMessages() {
   chatWindow.innerHTML = "";
   
   messages.forEach((msg) => {
-    // System messages are hidden
+    // Hide system messages
     if (msg.role === "system") return;
 
-    // Create a wrapper for the entire assistant or user "bubble"
+    // Create a wrapper
     const bubbleWrapper = document.createElement("div");
     bubbleWrapper.classList.add("bubble-wrapper", msg.role);
 
-    // Create the bubble (the grey or green box)
+    // Create the bubble
     const bubble = document.createElement("div");
     bubble.classList.add("message", msg.role);
 
-    // If it's an assistant message with 'cleanedText' or normal content
+    // For assistant with 'cleanedText', show that. Otherwise show normal content.
     bubble.innerHTML = msg.cleanedText || msg.content;
     bubbleWrapper.appendChild(bubble);
 
-    // If assistant provided recommendations, we can optionally show bullet points inside the bubble
+    // If assistant provided recommendations
     if (msg.role === "assistant" && msg.recommendations && msg.recommendations.length > 0) {
-      // Create a bullet list of each recommendation
       const ul = document.createElement("ul");
       ul.style.marginTop = "10px";
       msg.recommendations.forEach((rec) => {
@@ -94,15 +83,13 @@ function renderMessages() {
       bubble.appendChild(ul);
     }
 
-    // Then add the entire bubble wrapper to the chat window
+    // Append bubble to chat window
     chatWindow.appendChild(bubbleWrapper);
 
-    // If assistant has product cards to show, create them outside the bubble
+    // If there are product cards
     if (msg.role === "assistant" && msg.recommendations && msg.recommendations.length > 0) {
-      // A container for the cards
       const cardContainer = document.createElement("div");
       cardContainer.classList.add("product-card-container");
-      
       msg.recommendations.forEach((product) => {
         const card = renderProductCard(product);
         cardContainer.appendChild(card);
@@ -128,27 +115,62 @@ function renderProductCard(product) {
   return card;
 }
 
+/** 
+ * FEATURE: Show a "loading" indicator while the request is in progress 
+ * so the user knows the bot is thinking.
+ */
+function showLoadingBubble() {
+  // Create a bubble-wrapper that acts like an assistant bubble
+  const bubbleWrapper = document.createElement("div");
+  bubbleWrapper.classList.add("bubble-wrapper", "assistant", "loading-indicator");
+
+  const bubble = document.createElement("div");
+  bubble.classList.add("message", "assistant");
+  bubble.innerText = "در حال پردازش...";
+
+  // Add a spinner element
+  const spinner = document.createElement("div");
+  spinner.classList.add("spinner");
+
+  bubble.appendChild(spinner);
+  bubbleWrapper.appendChild(bubble);
+
+  chatWindow.appendChild(bubbleWrapper);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function hideLoadingBubble() {
+  // Remove any existing loading-indicator bubble
+  const loadingBubble = document.querySelector(".bubble-wrapper.loading-indicator");
+  if (loadingBubble) {
+    chatWindow.removeChild(loadingBubble);
+  }
+}
+
 /** Handle sending a message */
 async function handleSend() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  // Add user's message to the conversation
+  // 1) Push user message, render
   messages.push({ role: "user", content: text });
   renderMessages();
   userInput.value = "";
 
-  // Send the conversation + sessionId to the server
+  // 2) Show a loading bubble while waiting for server
+  showLoadingBubble();
+
   try {
     const response = await fetch(`${BASE_URL}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages,
-        sessionId
-      }),
+      body: JSON.stringify({ messages, sessionId }),
     });
 
+    // 3) Remove loading bubble
+    hideLoadingBubble();
+
+    // 4) Handle response
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Error from server:", errorText);
@@ -157,44 +179,37 @@ async function handleSend() {
 
     const data = await response.json();
     if (data.assistantMessage) {
-      // 1) Extract recommendations & remove JSON from the text
+      // Extract JSON recommendations
       const { cleanedText, recommendations } = extractRecommendations(data.assistantMessage.content);
 
-      // 2) Store this in the messages array
       messages.push({
         role: "assistant",
-        // Store the cleaned text that hides the JSON snippet
         cleanedText,
-        // Keep the original text if you want (but not necessary)
         content: data.assistantMessage.content,
-        // Array of phone objects
         recommendations
       });
-
-      // Re-render
       renderMessages();
     }
   } catch (error) {
     console.error("Error sending message:", error);
+    // Also hide the loading bubble if an error occurs
+    hideLoadingBubble();
   }
 }
+
+/** End chat and go to feedback */
 function endChat() {
   window.location.href = "feedback.html";
 }
-/**
- * Optional: If user tries to close/refresh the page, we can prompt them or redirect.
- * Browsers often override or ignore custom text. They may just say "Are you sure you want to leave?".
- */
+
+/** Warn on page exit */
 window.onbeforeunload = function(e) {
-  // Attempt a redirect to feedback. 
-  // Usually the browser will show a confirm dialog, if you return a string.
-  // If they confirm, they leave the page. If not, they stay.
   const message = "اگر پیش از خروج به ما بازخورد بدهید، خوشحال خواهیم شد.";
-  e.returnValue = message; 
+  e.returnValue = message;
   return message;
 };
 
-// Listen for "Enter" key in the input field
+// Listen for Enter key
 userInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") handleSend();
 });
