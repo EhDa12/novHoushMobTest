@@ -126,7 +126,7 @@ function showLoadingBubble() {
 
   const bubble = document.createElement("div");
   bubble.classList.add("message", "assistant");
-  bubble.innerText = "در حال پردازش...";
+  bubble.innerText = "بذار فکر کنم...";
 
   // Add a spinner element
   const spinner = document.createElement("div");
