@@ -36,7 +36,10 @@ async function submitFeedback(event) {
     const feedbackMsg = document.getElementById("feedbackMsg");
 
     if (response.ok) {
-      feedbackMsg.textContent = "بازخورد شما با موفقیت ثبت شد. سپاس از همراهی شما!";
+            feedbackMsg.textContent = "بازخورد شما با موفقیت ثبت شد. سپاس از همراهی شما، پس از لحظاتی به صفحه اول هدایت خواهید شد!";
+      setTimeout(() => {
+        window.location.href = "index.html";
+  }, 2000);
       // Optional: clear sessionId if you want a fresh session next time
       // localStorage.removeItem("chatSessionId");
     } else {
