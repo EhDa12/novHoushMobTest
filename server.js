@@ -109,7 +109,7 @@ app.post('/api/chat', async (req, res) => {
     // --- 5) Save or append the conversation to a single file per session
     try {
       //const logsDir = path.join(__dirname, '/newLogs/chat_logs');
-      const logsDir = path.join('./newLogs/chat_logs');
+      const logsDir = path.join('/./newLogs/chat_logs');
       if (!fs.existsSync(logsDir)) {
         fs.mkdirSync(logsDir, { recursive: true });
       }
@@ -178,7 +178,7 @@ app.post('/api/feedback', (req, res) => {
 
   // Load or create feedback.json
   //const feedbackFilePath = path.join(__dirname, '/newLogs/feedback.json');
-  const feedbackFilePath = path.join('./newLogs/feedback.json');
+  const feedbackFilePath = path.join('/./newLogs/feedback.json');
   let feedbackData = [];
   if (fs.existsSync(feedbackFilePath)) {
     const raw = fs.readFileSync(feedbackFilePath, 'utf-8');
