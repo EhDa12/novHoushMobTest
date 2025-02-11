@@ -96,6 +96,10 @@ function renderMessages() {
       });
       chatWindow.appendChild(cardContainer);
     }
+    chatWindow.scroll({
+      top: chatWindow.scrollHeight,
+      behavior: "smooth",
+    });
   });
 
   // Scroll to bottom
